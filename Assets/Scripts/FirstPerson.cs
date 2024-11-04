@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.UIElements;
+using UnityEngine.Video;
 
 public class FirstPerson : MonoBehaviour
 {
@@ -79,8 +80,12 @@ public class FirstPerson : MonoBehaviour
             movimientoVertical.y = Mathf.Sqrt(-2 * escalaGravedad * alturaSalto);
         }
     }
-    private void RecibirDanho()
+    public void RecibirDanho(int danhoRecibido)
     {
-
+        vida -= danhoRecibido;
+        if(vida < 0)
+        {
+            Destroy(gameObject);
+        }
     }
 }
