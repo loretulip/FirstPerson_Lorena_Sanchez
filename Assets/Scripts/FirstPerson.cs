@@ -6,6 +6,8 @@ using UnityEngine.UIElements;
 
 public class FirstPerson : MonoBehaviour
 {
+    [SerializeField] private int vida;
+
     [Header ("Movimiento")]
     [SerializeField] private float velocidadMovimiento;
     [SerializeField] private float escalaGravedad;
@@ -76,5 +78,9 @@ public class FirstPerson : MonoBehaviour
         {
             movimientoVertical.y = Mathf.Sqrt(-2 * escalaGravedad * alturaSalto);
         }
+    }
+    private void RecibirDanho()
+    {
+
     }
 }
