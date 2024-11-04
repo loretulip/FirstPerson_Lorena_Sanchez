@@ -142,6 +142,16 @@ PrefabInstance:
       objectReference: {fileID: 2088970091}
     - target: {fileID: -2902732646349485390, guid: d27c9257e9e847341bb039e9db85327c,
         type: 3}
+      propertyPath: attackPoint
+      value: 
+      objectReference: {fileID: 2088970091}
+    - target: {fileID: -2902732646349485390, guid: d27c9257e9e847341bb039e9db85327c,
+        type: 3}
+      propertyPath: danhoAtaque
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: -2902732646349485390, guid: d27c9257e9e847341bb039e9db85327c,
+        type: 3}
       propertyPath: personaje.m_Bits
       value: 64
       objectReference: {fileID: 0}
@@ -1816,6 +1826,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c15917797fc76aa4c9a4a35de7ef2eb2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  vida: 50
   velocidadMovimiento: 5
   escalaGravedad: 0
   alturaSalto: 1.72
