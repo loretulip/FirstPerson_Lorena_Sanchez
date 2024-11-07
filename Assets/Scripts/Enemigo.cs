@@ -10,11 +10,13 @@ public class Enemigo : MonoBehaviour
     private NavMeshAgent agent;
     private FirstPerson player;
     private Animator anim;
+    private ArmaManual arma;
     private bool ventanaAbierta = false;
     private bool danhoRealizado = false;
     [SerializeField] private Transform attackPoint;
     [SerializeField] private float radio;
     [SerializeField] private LayerMask personaje;
+    [SerializeField] private float vidas;
 
 
     // Start is called before the first frame update
@@ -23,6 +25,8 @@ public class Enemigo : MonoBehaviour
        agent = GetComponent<NavMeshAgent>();
        player = GameObject.FindObjectOfType<FirstPerson>();
        anim = GetComponent<Animator>();
+       arma = GetComponent<ArmaManual>();
+
 
     }
 
@@ -30,7 +34,7 @@ public class Enemigo : MonoBehaviour
     void Update()
     {
         Perseguir();
-        // solo si la ventana esta abierta y aun no ha hecho daño...
+        // Solo si la ventana esta abierta y aun no ha hecho daño...
         if (ventanaAbierta && danhoRealizado == false) 
         {
             DetectarJugador();
@@ -83,5 +87,14 @@ public class Enemigo : MonoBehaviour
     private void CerrarVentanaAtaque()
     {
         ventanaAbierta = false;
+    }
+    public void RecibirDanho(float danhoRecibido)
+    {
+        vidas -= danhoRecibido;
+
+        if (vidas <= 0)
+        {
+            Destroy(this.gameObject);
+        }
     }
 }
