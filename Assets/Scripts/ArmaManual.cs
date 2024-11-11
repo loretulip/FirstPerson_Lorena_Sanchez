@@ -24,7 +24,10 @@ public class ArmaManual : MonoBehaviour
             system.Play(); // Ejecutar sistema partículas
             if(Physics.Raycast(cam.transform.position, cam.transform.forward, out RaycastHit hitInfo, datos.distanciaAtaque))
             {
-                hitInfo.transform.GetComponent<Enemigo>().RecibirDanho(datos.danhoAtaque);
+                if (hitInfo.transform.CompareTag("ParteEnemigo"))
+                {
+                    hitInfo.transform.GetComponent<ParteDeEnemigo>().RecibirDanho(datos.danhoAtaque);
+                }
                
             }
 

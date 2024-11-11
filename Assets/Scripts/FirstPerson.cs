@@ -41,12 +41,11 @@ public class FirstPerson : MonoBehaviour
         //Si existe input...
         if (input.sqrMagnitude > 0) 
         {
-            float anguloRotacion = Mathf.Atan2(input.x, input.y) * Mathf.Rad2Deg + Camera.main.transform.eulerAngles.y;
+            float anguloRotacion = Mathf.Atan2(input.x, input.y) * Mathf.Rad2Deg + cam.transform.eulerAngles.y;
             transform.eulerAngles = new Vector3(0, anguloRotacion, 0);
 
             Vector3 movimiento = Quaternion.Euler(0, anguloRotacion, 0) * Vector3.forward;
-            controller.Move(movimiento * velocidadMovimiento * Time.deltaTime);
-            
+            controller.Move(movimiento * velocidadMovimiento * Time.deltaTime);            
         }        
         AplicarGravedad();
         DeteccionSuelo();

@@ -17,17 +17,32 @@ public class Enemigo : MonoBehaviour
     [SerializeField] private float radio;
     [SerializeField] private LayerMask personaje;
     [SerializeField] private float vidas;
+    private Rigidbody[] huesos;
+
+    public float Vidas { get => vidas; set => vidas = value; }
+
 
 
     // Start is called before the first frame update
     void Start()
     {
-       agent = GetComponent<NavMeshAgent>();
-       player = GameObject.FindObjectOfType<FirstPerson>();
-       anim = GetComponent<Animator>();
-       arma = GetComponent<ArmaManual>();
+        agent = GetComponent<NavMeshAgent>();
+        player = GameObject.FindObjectOfType<FirstPerson>();
+        anim = GetComponent<Animator>();
+        arma = GetComponent<ArmaManual>();
+        huesos = GetComponentsInChildren<Rigidbody>();
 
+        CambiarEstadoHuesos(false);
 
+    }
+
+    // Activa el kinematic de todos los huesos para que no entren en conflicto con la animación
+    private void CambiarEstadoHuesos(bool estado)
+    {
+        for (int i = 0; i < huesos.Length; i++)
+        {
+            huesos[i].isKinematic = estado;
+        }
     }
 
     // Update is called once per frame
@@ -35,7 +50,7 @@ public class Enemigo : MonoBehaviour
     {
         Perseguir();
         // Solo si la ventana esta abierta y aun no ha hecho daño...
-        if (ventanaAbierta && danhoRealizado == false) 
+        if (ventanaAbierta && danhoRealizado == false)
         {
             DetectarJugador();
         }
@@ -46,9 +61,9 @@ public class Enemigo : MonoBehaviour
     {
         Collider[] collsDetectados = Physics.OverlapSphere(attackPoint.position, radio, personaje);
         //Si al menos hemos detectado un collider...
-        if(collsDetectados.Length > 0)
+        if (collsDetectados.Length > 0)
         {
-            for(int i = 0; i < collsDetectados.Length; i++)
+            for (int i = 0; i < collsDetectados.Length; i++)
             {
                 collsDetectados[i].GetComponent<FirstPerson>().RecibirDanho(danhoAtaque);
             }
@@ -88,13 +103,16 @@ public class Enemigo : MonoBehaviour
     {
         ventanaAbierta = false;
     }
-    public void RecibirDanho(float danhoRecibido)
+    public void Morir()
     {
-        vidas -= danhoRecibido;
-
-        if (vidas <= 0)
-        {
-            Destroy(this.gameObject);
-        }
+        // Cuando muera el enemigo se desactiva el kinematic de los huesos, lo que hace que caiga por el ragdoll 
+        CambiarEstadoHuesos(true);
+        // "enabled" para Activar o Desactivar componentes
+        // "SetActive" para Activar o Desactivar todo el objeto
+        anim.enabled = false;
+        agent.enabled = false;
+        Destroy(gameObject, 10);
     }
+
+    
 }
