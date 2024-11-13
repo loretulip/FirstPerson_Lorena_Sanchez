@@ -21,6 +21,7 @@ public class ArmaManual : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(0))
         {
+            Debug.Log("Clic");
             system.Play(); // Ejecutar sistema partículas
             if(Physics.Raycast(cam.transform.position, cam.transform.forward, out RaycastHit hitInfo, datos.distanciaAtaque))
             {

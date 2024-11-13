@@ -36,7 +36,9 @@ public class FirstPerson : MonoBehaviour
         float h = Input.GetAxisRaw("Horizontal"); 
         float v = Input.GetAxisRaw("Vertical");
         Vector2 input = new Vector2(h, v).normalized;
-        //Vector3 movimiento = new Vector3(h, 0, v).normalized;
+
+
+        transform.eulerAngles = new Vector3(0, cam.transform.eulerAngles.y, 0);
 
         //Si existe input...
         if (input.sqrMagnitude > 0) 
