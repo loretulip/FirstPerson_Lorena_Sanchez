@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class Spawner : MonoBehaviour
 {
@@ -9,13 +10,17 @@ public class Spawner : MonoBehaviour
 
     void Start()
     {
-       
+        StartCoroutine(SpawnearEnemigo());
     }
-    IEnumerator SpawnearEnemigo()
+    private IEnumerator SpawnearEnemigo()
     {
-        yield return new WaitForSeconds(2);
-        //Saca una copia de u enemigo en el punto 0 con rotación 0,0,0
-        //          QUÉ             DÓNDE           CÓMO
-        Instantiate(enemigoPrefab, puntosSpawn[0].position, Quaternion.identity);
+        while (true)
+        {
+            //Saca una copia de u enemigo en el punto 0 con rotación 0,0,0
+            //          QUÉ             DÓNDE           CÓMO
+            Instantiate(enemigoPrefab, puntosSpawn[Random.Range(0,puntosSpawn.Length)].position, Quaternion.identity);
+            yield return new WaitForSeconds(2);
+        }
     }
+
 }

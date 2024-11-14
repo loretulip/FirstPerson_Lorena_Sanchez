@@ -75,10 +75,12 @@ public class Enemigo : MonoBehaviour
     {
         agent.SetDestination(player.transform.position);
 
-        // si la distancia que nos queda hacia el objeto cae por debajo del stoppingDistance
-        if (agent.remainingDistance <= agent.stoppingDistance)
+        // Si la distancia que nos queda hacia el objeto cae por debajo del stoppingDistance
+
+        // pathpending: Si no hay cálculos pendientes para saber dónde está mi objetivo
+        if (!agent.pathPending && agent.remainingDistance <= agent.stoppingDistance)
         {
-            // me paro ante él
+            // Me paro ante él
             agent.isStopped = true;
             anim.SetBool("attacking", true);
         }

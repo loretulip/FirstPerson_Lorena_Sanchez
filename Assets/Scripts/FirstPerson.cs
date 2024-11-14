@@ -59,6 +59,17 @@ public class FirstPerson : MonoBehaviour
         movimientoVertical.y += escalaGravedad * Time.deltaTime;
         controller.Move(movimientoVertical * Time.deltaTime);
     }
+    // Es como OnCollisionEnter PERO para un CharacterController
+    private void OnControllerColliderHit(ControllerColliderHit hit)
+    {
+        if(hit.gameObject.CompareTag("ParteEnemigo"))
+        {
+            Rigidbody rbEnemigo = hit.gameObject.GetComponent<Rigidbody>();
+                                      // Enemigo                   Jugador
+            Vector3 direccionFuerza = hit.transform.position - transform.position;
+            rbEnemigo.AddForce(direccionFuerza.normalized * 50,ForceMode.Impulse);
+        }
+    }
     private void DeteccionSuelo()
     {
         //Tengo que lanzar una bola de detección en mis pies para detectar si hay suelo
