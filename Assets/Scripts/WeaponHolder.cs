@@ -30,16 +30,22 @@ public class WeaponHolder : MonoBehaviour
             CambiarArma(2);
         }
 
+        CambiarArma(0);
+
     }
 
-    private void CambiarArma(int numeroArma)
+    private void CambiarArma(int nuevoIndice)
     {
-        // Desactivo el arma que actualmente llevo equipada
-        arma[indiceArmaActual].SetActive(false);
+        if (nuevoIndice >= arma.Length || nuevoIndice < arma.Length)
+        {
 
-        // Cambio el índice
-        indiceArmaActual = numeroArma;
+            // Desactivo el arma que actualmente llevo equipada
+            arma[indiceArmaActual].SetActive(false);
 
-        arma[indiceArmaActual].SetActive(true);
+            // Cambio el índice
+            indiceArmaActual = nuevoIndice;
+
+            arma[indiceArmaActual].SetActive(true);
+        }
     }
 }

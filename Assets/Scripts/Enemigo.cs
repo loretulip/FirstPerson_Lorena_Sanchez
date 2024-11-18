@@ -32,7 +32,7 @@ public class Enemigo : MonoBehaviour
         arma = GetComponent<ArmaManual>();
         huesos = GetComponentsInChildren<Rigidbody>();
 
-        CambiarEstadoHuesos(false);
+        CambiarEstadoHuesos(true);
 
     }
 
