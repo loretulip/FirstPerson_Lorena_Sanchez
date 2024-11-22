@@ -17,26 +17,13 @@ public class WeaponHolder : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(Input.GetKeyDown(KeyCode.Alpha1))
-        {
-            CambiarArma(0);
-        }
-        if (Input.GetKeyDown(KeyCode.Alpha2))
-        {
-            CambiarArma(1);
-        }
-        if (Input.GetKeyDown(KeyCode.Alpha3))
-        {
-            CambiarArma(2);
-        }
-
-        CambiarArma(0);
-
+        CambioArmaTeclado();
+        CambioArmaScroll();
     }
 
     private void CambiarArma(int nuevoIndice)
     {
-        if (nuevoIndice >= arma.Length || nuevoIndice < arma.Length)
+        if (nuevoIndice >= 0 && nuevoIndice < arma.Length)
         {
 
             // Desactivo el arma que actualmente llevo equipada
@@ -48,4 +35,32 @@ public class WeaponHolder : MonoBehaviour
             arma[indiceArmaActual].SetActive(true);
         }
     }
+    private void CambioArmaTeclado()
+    {
+        if (Input.GetKeyDown(KeyCode.Alpha1))
+        {
+            CambiarArma(0);
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha2))
+        {
+            CambiarArma(1);
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha3))
+        {
+            CambiarArma(2);
+        }
+    }
+    private void CambioArmaScroll()
+    {
+        float scrollWheel = Input.GetAxis("Mouse ScrollWheel");
+        if (scrollWheel > 0)
+        {
+            CambiarArma(indiceArmaActual - 1);
+        }
+        else if (scrollWheel < 0)
+        {
+            CambiarArma(indiceArmaActual + 1);
+        }
+    }
+
 }
