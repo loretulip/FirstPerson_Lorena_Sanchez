@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,114 +6,122 @@ using UnityEngine.AI;
 public class Enemigo : MonoBehaviour
 {
     [SerializeField] private int danhoAtaque;
+    [SerializeField] private float radioAtaque;
+    [SerializeField] private LayerMask queEsPlayer;
+    [SerializeField] private Transform attackPoint;
+    [SerializeField] private float vidas;
+
     private NavMeshAgent agent;
     private FirstPerson player;
     private Animator anim;
-    private ArmaManual arma;
+    private bool enRangoAtaque = false;
     private bool ventanaAbierta = false;
-    private bool danhoRealizado = false;
-    [SerializeField] private Transform attackPoint;
-    [SerializeField] private float radio;
-    [SerializeField] private LayerMask personaje;
-    [SerializeField] private float vidas;
-    private Rigidbody[] huesos;
+    private bool atacando = false;
 
     public float Vidas { get => vidas; set => vidas = value; }
 
-
-
-    // Start is called before the first frame update
     void Start()
     {
         agent = GetComponent<NavMeshAgent>();
         player = GameObject.FindObjectOfType<FirstPerson>();
         anim = GetComponent<Animator>();
-        arma = GetComponent<ArmaManual>();
-        huesos = GetComponentsInChildren<Rigidbody>();
-
-        CambiarEstadoHuesos(true);
-
     }
 
-    // Activa el kinematic de todos los huesos para que no entren en conflicto con la animación
-    private void CambiarEstadoHuesos(bool estado)
-    {
-        for (int i = 0; i < huesos.Length; i++)
-        {
-            huesos[i].isKinematic = estado;
-        }
-    }
-
-    // Update is called once per frame
     void Update()
     {
-        Perseguir();
-        // Solo si la ventana esta abierta y aun no ha hecho daño...
-        if (ventanaAbierta && danhoRealizado == false)
+        if (player == null) return; // Evitar errores si el jugador no existe.
+
+        float distancia = Vector3.Distance(transform.position, player.transform.position);
+
+        if (distancia <= radioAtaque) // Si está en rango de ataque
+        {
+            if (!atacando)
+            {
+                Atacar();
+            }
+        }
+        else // Si está fuera de rango de ataque
+        {
+            Perseguir();
+        }
+
+        if (ventanaAbierta)
         {
             DetectarJugador();
-        }
-        // activar la animacion de ataque
-    }
-
-    private void DetectarJugador()
-    {
-        Collider[] collsDetectados = Physics.OverlapSphere(attackPoint.position, radio, personaje);
-        //Si al menos hemos detectado un collider...
-        if (collsDetectados.Length > 0)
-        {
-            for (int i = 0; i < collsDetectados.Length; i++)
-            {
-                collsDetectados[i].GetComponent<FirstPerson>().RecibirDanho(danhoAtaque);
-            }
-            danhoRealizado = true;
         }
     }
 
     private void Perseguir()
     {
+        enRangoAtaque = false;
+        atacando = false;
+
+        anim.SetBool("Attacking", false);
+        agent.isStopped = false;
         agent.SetDestination(player.transform.position);
+    }
 
-        // Si la distancia que nos queda hacia el objeto cae por debajo del stoppingDistance
+    private void Atacar()
+    {
+        enRangoAtaque = true;
+        atacando = true;
 
-        // pathpending: Si no hay cálculos pendientes para saber dónde está mi objetivo
-        if (!agent.pathPending && agent.remainingDistance <= agent.stoppingDistance)
+        agent.isStopped = true; // Detener al enemigo.
+        anim.SetBool("Attacking", true);
+
+        // Asegurar que el enemigo mire al jugador.
+        Vector3 direccionAPlayer = (player.transform.position - transform.position).normalized;
+        direccionAPlayer.y = 0;
+        transform.rotation = Quaternion.LookRotation(direccionAPlayer);
+    }
+
+    private void DetectarJugador()
+    {
+        Collider[] collsDetectados = Physics.OverlapSphere(attackPoint.position, radioAtaque, queEsPlayer);
+
+        if (collsDetectados.Length > 0)
         {
-            // Me paro ante él
-            agent.isStopped = true;
-            anim.SetBool("attacking", true);
+            foreach (Collider col in collsDetectados)
+            {
+                FirstPerson jugador = col.GetComponent<FirstPerson>();
+                if (jugador != null)
+                {
+                    jugador.RecibirDanho(danhoAtaque);
+                }
+            }
+            ventanaAbierta = false; // Cerrar ventana de ataque.
         }
     }
 
-    // Evento de animacion
-    private void FinAtaque()
-    {
-        agent.isStopped = false;
-        anim.SetBool("attacking", false);
-        danhoRealizado = false;
-    }
-    private void Atacar()
-    {
-
-    }
+    // Métodos llamados desde los eventos de animación.
     private void AbrirVentanaAtaque()
     {
         ventanaAbierta = true;
     }
+
     private void CerrarVentanaAtaque()
     {
         ventanaAbierta = false;
     }
-    public void Morir()
+
+    private void FinAtaque()
     {
-        // Cuando muera el enemigo se desactiva el kinematic de los huesos, lo que hace que caiga por el ragdoll 
-        CambiarEstadoHuesos(true);
-        // "enabled" para Activar o Desactivar componentes
-        // "SetActive" para Activar o Desactivar todo el objeto
-        anim.enabled = false;
-        agent.enabled = false;
-        Destroy(gameObject, 10);
+        atacando = false;
+        anim.SetBool("Attacking", false);
+        Perseguir(); // Reanudar persecución.
     }
 
-    
+    public void Morir()
+    {
+        agent.enabled = false;
+        anim.enabled = false;
+        Destroy(gameObject, 10); // Destruir al enemigo tras 10 segundos.
+    }
+
+    private void OnDrawGizmosSelected()
+    {
+        // Visualizar el rango de ataque en la escena.
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(attackPoint.position, radioAtaque);
+    }
 }
