@@ -1,38 +1,77 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering;
-using UnityEngine.UIElements;
 using UnityEngine.Video;
+using UnityEngine.UI;
+using TMPro;
 
 public class FirstPerson : MonoBehaviour
 {
-    [SerializeField] private int vida;
+    [SerializeField] public GameObject pantallaMuerte;
+    [SerializeField] public GameObject pantallaHUD;
+    [SerializeField] public SistemaInteracciones sistemaInteracciones;
+
 
     [Header ("Movimiento")]
     [SerializeField] private float velocidadMovimiento;
     [SerializeField] private float escalaGravedad;
     [SerializeField] private float alturaSalto;
+    private bool isGrounded = true;
+    private Rigidbody rb;
+
 
     [Header("Deteccion Suelo")]
     [SerializeField] private Transform pies;
     [SerializeField] private LayerMask queEsSuelo;
     [SerializeField] private float radio;
 
+    [Header("Vida")]
+    [SerializeField] private int vidaMax;
+    [SerializeField] private int vidaActual;
+    [SerializeField] private Image barraVida;
+    [SerializeField] private TMP_Text textoVida;
+
+
     CharacterController controller;
     private Camera cam;
+    public bool tieneLlave = false;
+
 
     private Vector3 movimientoVertical;
+
+    public int VidaActual { get => vidaActual; set => vidaActual = value; }
+
     // Start is called before the first frame update
     void Start()
     {
+        vidaActual = vidaMax;
         controller = GetComponent<CharacterController>();
         cam = Camera.main;
+        rb = GetComponent<Rigidbody>();
+
+    }
+    public void RestaurarVida(int cantidad)
+    {
+        vidaActual = Mathf.Min(vidaActual + cantidad, vidaMax); // No superar la vida máxima
+        Debug.Log("Vida restaurada a: " + vidaActual);
+    }
+    private void ActualizacionHUD()
+    {
+        float rellenoBarra = (float)vidaActual / vidaMax;
+        barraVida.fillAmount = rellenoBarra;
+        textoVida.SetText ( vidaActual+ " / " + vidaMax);
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (vidaActual<=0)
+        {
+            Muerte();
+        }
+        ActualizacionHUD();
         float h = Input.GetAxisRaw("Horizontal"); 
         float v = Input.GetAxisRaw("Vertical");
         Vector2 input = new Vector2(h, v).normalized;
@@ -72,9 +111,9 @@ public class FirstPerson : MonoBehaviour
     }
     private void DeteccionSuelo()
     {
-        //Tengo que lanzar una bola de detección en mis pies para detectar si hay suelo
         Collider[] collsDetectados = Physics.OverlapSphere(pies.position, radio, queEsSuelo);
-        if(collsDetectados.Length > 0)
+
+        if (collsDetectados.Length > 0)
         {
             movimientoVertical.y = 0;
             Saltar();
@@ -87,17 +126,45 @@ public class FirstPerson : MonoBehaviour
     }
     private void Saltar()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
         {
-            movimientoVertical.y = Mathf.Sqrt(-2 * escalaGravedad * alturaSalto);
+            Debug.Log("Espacio");
+            movimientoVertical.y = Mathf.Sqrt(-2f * escalaGravedad * alturaSalto);
         }
     }
+
     public void RecibirDanho(int danhoRecibido)
     {
-        vida -= danhoRecibido;
-        if(vida < 0)
+        vidaActual -= danhoRecibido;
+        if(vidaActual < 0)
         {
             Destroy(gameObject);
+            ActualizacionHUD();
         }
     }
+
+    public void Muerte()
+    {
+        Time.timeScale = 0.3f;
+        pantallaMuerte.SetActive(true);
+        pantallaHUD.SetActive(false);
+    }
+    public void RecogerVida(int vidaRecuperada)
+    {
+        vidaActual = Mathf.Min(vidaActual + vidaRecuperada, vidaMax);
+        ActualizacionHUD();
+    }
+
+    public void ObtenerLlave()
+    {
+        tieneLlave = true;
+        Debug.Log("Llave obtenida.");
+    }
+
+    public bool TieneLlave()
+    {
+        return tieneLlave;
+    }
+
+
 }

@@ -16,4 +16,4 @@ MonoBehaviour:
   balasBolsa: 120
   distanciaAtaque: 10
   danhoAtaque: 2
-  cadenciaAtaque: 3
+  cadenciaAtaque: 4

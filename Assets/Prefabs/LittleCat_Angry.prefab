@@ -1093,7 +1093,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   fuerza: 15
-  tiempoVida: 3
+  tiempoVida: 1
   radioExplosion: 10
   queEsExplotable:
     serializedVersion: 2

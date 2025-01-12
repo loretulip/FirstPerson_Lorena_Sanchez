@@ -12,7 +12,7 @@ public class ArmaManual : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        // came s la camara principal de la escena "Main Camera"
+        // cam es la camara principal de la escena "Main Camera"
         cam=Camera.main;
     }
 

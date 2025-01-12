@@ -9,12 +9,15 @@ public class Enemigo : MonoBehaviour
     [SerializeField] private float radioAtaque;
     [SerializeField] private LayerMask queEsPlayer;
     [SerializeField] private Transform attackPoint;
+    [SerializeField] public bool danhoRealizado = false;
+    private Rigidbody[] huesos;
     [SerializeField] private float vidas;
 
     private NavMeshAgent agent;
     private FirstPerson player;
     private Animator anim;
-    private bool enRangoAtaque = false;
+
+    public bool enRangoAtaque = false;
     private bool ventanaAbierta = false;
     private bool atacando = false;
 
@@ -25,6 +28,10 @@ public class Enemigo : MonoBehaviour
         agent = GetComponent<NavMeshAgent>();
         player = GameObject.FindObjectOfType<FirstPerson>();
         anim = GetComponent<Animator>();
+        huesos = GetComponentsInChildren<Rigidbody>();
+
+        CambiarEstadoHuesos(true);
+
     }
 
     void Update()
@@ -37,7 +44,7 @@ public class Enemigo : MonoBehaviour
         {
             if (!atacando)
             {
-                Atacar();
+
             }
         }
         else // Si está fuera de rango de ataque
@@ -51,26 +58,24 @@ public class Enemigo : MonoBehaviour
         }
     }
 
+
     private void Perseguir()
     {
-        enRangoAtaque = false;
-        atacando = false;
-
-        anim.SetBool("Attacking", false);
-        agent.isStopped = false;
         agent.SetDestination(player.transform.position);
+
+        if (!agent.pathPending && agent.remainingDistance <= agent.stoppingDistance)
+        {
+            agent.isStopped = true;
+
+            anim.SetBool("Attacking", true);
+
+            EnfocarPlayer();
+        }       
     }
 
-    private void Atacar()
+    private void EnfocarPlayer()
     {
-        enRangoAtaque = true;
-        atacando = true;
-
-        agent.isStopped = true; // Detener al enemigo.
-        anim.SetBool("Attacking", true);
-
-        // Asegurar que el enemigo mire al jugador.
-        Vector3 direccionAPlayer = (player.transform.position - transform.position).normalized;
+        Vector3 direccionAPlayer = (player.transform.position - this.gameObject.transform.position).normalized;
         direccionAPlayer.y = 0;
         transform.rotation = Quaternion.LookRotation(direccionAPlayer);
     }
@@ -81,15 +86,11 @@ public class Enemigo : MonoBehaviour
 
         if (collsDetectados.Length > 0)
         {
-            foreach (Collider col in collsDetectados)
+            for (int i = 0; i < collsDetectados.Length; i++)
             {
-                FirstPerson jugador = col.GetComponent<FirstPerson>();
-                if (jugador != null)
-                {
-                    jugador.RecibirDanho(danhoAtaque);
-                }
+                collsDetectados[i].GetComponent<FirstPerson>().RecibirDanho(danhoAtaque);
             }
-            ventanaAbierta = false; // Cerrar ventana de ataque.
+            danhoRealizado = true;
         }
     }
 
@@ -106,16 +107,26 @@ public class Enemigo : MonoBehaviour
 
     private void FinAtaque()
     {
-        atacando = false;
+        agent.isStopped = false;
         anim.SetBool("Attacking", false);
-        Perseguir(); // Reanudar persecución.
+        danhoRealizado = false;
     }
 
     public void Morir()
     {
         agent.enabled = false;
         anim.enabled = false;
+
+        CambiarEstadoHuesos(false);
         Destroy(gameObject, 10); // Destruir al enemigo tras 10 segundos.
+    }
+
+    private void CambiarEstadoHuesos(bool estado)
+    {
+        for (int i = 0; i < huesos.Length; i++)
+        {
+            huesos[i].isKinematic = estado;
+        }
     }
 
     private void OnDrawGizmosSelected()

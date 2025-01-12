@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Enemigo
   - ParteEnemigo
+  - Suelo
   layers:
   - Default
   - TransparentFX
