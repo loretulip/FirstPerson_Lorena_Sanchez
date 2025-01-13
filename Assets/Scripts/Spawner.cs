@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 public class Spawner : MonoBehaviour
 {
@@ -12,15 +11,17 @@ public class Spawner : MonoBehaviour
     {
         StartCoroutine(SpawnearEnemigo());
     }
+
     private IEnumerator SpawnearEnemigo()
     {
         while (true)
         {
-            //Saca una copia de u enemigo en el punto 0 con rotación 0,0,0
-            //          QUÉ             DÓNDE           CÓMO
-            Instantiate(enemigoPrefab, puntosSpawn[Random.Range(0,puntosSpawn.Length)].position, Quaternion.identity);
-            yield return new WaitForSeconds(2);
+            // Solo spawnea enemigos si el Time.timeScale es igual a 1
+            if (Time.timeScale == 1)
+            {
+                Instantiate(enemigoPrefab, puntosSpawn[Random.Range(0, puntosSpawn.Length)].position, Quaternion.identity);
+            }
+            yield return new WaitForSeconds(2); // Espera 2 segundos
         }
     }
-
 }

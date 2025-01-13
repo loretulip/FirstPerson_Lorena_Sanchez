@@ -7,6 +7,9 @@ public class ArmaManual : MonoBehaviour
     [SerializeField] private ArmaSO datos;
     [SerializeField] private ParticleSystem system;
     [SerializeField] private LayerMask queEsEnemigo;
+    [SerializeField] private AudioSource audiosource;
+    [SerializeField] private AudioClip pistola;
+
 
     private Camera cam;
     // Start is called before the first frame update
@@ -21,9 +24,9 @@ public class ArmaManual : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(0))
         {
-            Debug.Log("Clic");
             system.Play(); // Ejecutar sistema partículas
-            if(Physics.Raycast(cam.transform.position, cam.transform.forward, out RaycastHit hitInfo, datos.distanciaAtaque))
+            audiosource.PlayOneShot(pistola);
+            if (Physics.Raycast(cam.transform.position, cam.transform.forward, out RaycastHit hitInfo, datos.distanciaAtaque))
             {
                 if (hitInfo.transform.CompareTag("ParteEnemigo"))
                 {

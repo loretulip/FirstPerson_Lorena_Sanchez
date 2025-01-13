@@ -1100,6 +1100,7 @@ MonoBehaviour:
     m_Bits: 128
   explosionPrefab: {fileID: 1121192042590650, guid: e1b08032bec16ba4eb1ae23cbd572664,
     type: 3}
+  sonidoGato: {fileID: 8300000, guid: 940c3a4cf23ea2544b7172ff3db03851, type: 3}
 --- !u!1 &8473224140626165500
 GameObject:
   m_ObjectHideFlags: 0

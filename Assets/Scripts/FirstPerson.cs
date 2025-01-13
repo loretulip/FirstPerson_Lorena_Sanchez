@@ -6,12 +6,12 @@ using UnityEngine.Rendering;
 using UnityEngine.Video;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class FirstPerson : MonoBehaviour
 {
     [SerializeField] public GameObject pantallaMuerte;
     [SerializeField] public GameObject pantallaHUD;
-    [SerializeField] public SistemaInteracciones sistemaInteracciones;
 
 
     [Header ("Movimiento")]
@@ -165,6 +165,6 @@ public class FirstPerson : MonoBehaviour
     {
         return tieneLlave;
     }
-
-
+    
+    
 }

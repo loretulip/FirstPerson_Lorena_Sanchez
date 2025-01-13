@@ -7,13 +7,13 @@ public class PuertaFinal : MonoBehaviour
     private bool puertaAbierta = false;
     private Animator animator;
     public GameObject mensaje;
-    public Text mensajeTexto;
-    private bool esperandoInput = false;
 
     void Start()
     {
         animator = GetComponent<Animator>();
         mensaje.SetActive(false);
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
     }
 
     public void Interactuar(FirstPerson player)
@@ -28,19 +28,29 @@ public class PuertaFinal : MonoBehaviour
                 }
 
                 puertaAbierta = true;
-                Debug.Log("¡Has abierto la puerta con la llave!");
             }
             else
             {
-                mensajeTexto.text = "¡Necesitas una llave para abrir esta puerta!";
                 mensaje.SetActive(true);
                 Time.timeScale = 0f;
-                esperandoInput = true;
+                Cursor.lockState = CursorLockMode.None;
+                Cursor.visible = true;
             }
         }
         else
         {
-            Debug.Log("La puerta ya está abierta.");
+            Debug.Log("La puerta ya está abierta");
+        }
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.X))
+        {
+            mensaje.SetActive(false);
+            Time.timeScale = 1f;
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
         }
     }
 
@@ -49,16 +59,6 @@ public class PuertaFinal : MonoBehaviour
         if (other.CompareTag("Player") && puertaAbierta)
         {
             SceneManager.LoadScene(2);
-        }
-    }
-
-    void Update()
-    {
-        if (esperandoInput && Input.GetKeyDown(KeyCode.E))
-        {
-            mensaje.SetActive(false);
-            Time.timeScale = 1f;
-            esperandoInput = false;
         }
     }
 }

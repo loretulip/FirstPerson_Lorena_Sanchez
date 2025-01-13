@@ -7,7 +7,7 @@ public class Bazooka : MonoBehaviour
 {
     [SerializeField] private GameObject gatitoPrefab;
     [SerializeField] private Transform spawnPoint;
-    [SerializeField] private AudioSource granadaGato;
+    [SerializeField] private AudioSource disparoBazooka;
     void Start()
     {
         
@@ -24,11 +24,8 @@ public class Bazooka : MonoBehaviour
         {
             // Creo una instancia con la misma orientacion que el cañon
             Instantiate(gatitoPrefab,spawnPoint.position,spawnPoint.rotation);
+            disparoBazooka.Play();
         }
     }
-    private void ReproducirSonido(AudioClip clip)
-    {
-        Debug.Log("Maullido");
-        granadaGato.PlayOneShot(clip);
-    }
+    
 }

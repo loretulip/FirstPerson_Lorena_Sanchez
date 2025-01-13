@@ -7,6 +7,9 @@ public class ArmaAutomatica : MonoBehaviour
 {
     [SerializeField] private ParticleSystem system;
     [SerializeField] private ArmaSO datos;
+    [SerializeField] private AudioSource audioSource;
+    [SerializeField] private AudioClip disparoM4;
+
     private float timer;
     private Camera cam;
     // Start is called before the first frame update
@@ -24,6 +27,7 @@ public class ArmaAutomatica : MonoBehaviour
         {
 
             system.Play();
+            audioSource.PlayOneShot(disparoM4);
             if (Physics.Raycast(cam.transform.position, cam.transform.forward, out RaycastHit hitInfo, datos.distanciaAtaque))
             {
                 if (hitInfo.transform.CompareTag("ParteEnemigo"))
