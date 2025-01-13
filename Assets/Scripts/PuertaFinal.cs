@@ -54,11 +54,5 @@ public class PuertaFinal : MonoBehaviour
         }
     }
 
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.CompareTag("Player") && puertaAbierta)
-        {
-            SceneManager.LoadScene(2);
-        }
-    }
+    
 }

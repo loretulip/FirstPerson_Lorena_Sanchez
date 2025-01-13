@@ -17,7 +17,6 @@ public class Enemigo : MonoBehaviour
     private FirstPerson player;
     private Animator anim;
 
-    public bool enRangoAtaque = false;
     private bool ventanaAbierta = false;
     private bool atacando = false;
 
@@ -118,7 +117,7 @@ public class Enemigo : MonoBehaviour
         anim.enabled = false;
 
         CambiarEstadoHuesos(false);
-        Destroy(gameObject, 10); // Destruir al enemigo tras 10 segundos.
+        Destroy(gameObject, 5); // Destruir al enemigo tras 10 segundos.
     }
 
     private void CambiarEstadoHuesos(bool estado)
