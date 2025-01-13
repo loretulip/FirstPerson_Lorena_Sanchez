@@ -17,8 +17,15 @@ public class WeaponHolder : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        CambioArmaTeclado();
-        CambioArmaScroll();
+        if(Time.timeScale>0)
+        {
+            CambioArmaTeclado();
+            CambioArmaScroll();
+        }
+        else
+        {
+        }
+        
     }
 
     private void CambiarArma(int nuevoIndice)

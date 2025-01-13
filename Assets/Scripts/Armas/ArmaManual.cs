@@ -22,20 +22,30 @@ public class ArmaManual : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetMouseButtonDown(0))
+        if(Time.timeScale > 0)
         {
-            system.Play(); // Ejecutar sistema partículas
-            audiosource.PlayOneShot(pistola);
-            if (Physics.Raycast(cam.transform.position, cam.transform.forward, out RaycastHit hitInfo, datos.distanciaAtaque))
+            if (Input.GetMouseButtonDown(0))
             {
-                if (hitInfo.transform.CompareTag("ParteEnemigo"))
+                system.Play(); // Ejecutar sistema partículas
+                audiosource.PlayOneShot(pistola);
+                if (Physics.Raycast(cam.transform.position, cam.transform.forward, out RaycastHit hitInfo, datos.distanciaAtaque))
                 {
-                    hitInfo.transform.GetComponent<ParteDeEnemigo>().RecibirDanho(datos.danhoAtaque);
-                }
-               
-            }
+                    if (hitInfo.transform.CompareTag("ParteEnemigo"))
+                    {
+                        hitInfo.transform.GetComponent<ParteDeEnemigo>().RecibirDanho(datos.danhoAtaque);
+                    }
 
+                }
+
+            }
         }
+        else
+        {
+            Debug.Log("Menu Pausa");
+        }
+
+
+        
         
 
     }

@@ -22,22 +22,28 @@ public class ArmaAutomatica : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        timer += Time.deltaTime;
-        if (Input.GetMouseButton(0) && timer >= datos.cadenciaAtaque)
+        if (Time.timeScale > 0)
         {
-
-            system.Play();
-            audioSource.PlayOneShot(disparoM4);
-            if (Physics.Raycast(cam.transform.position, cam.transform.forward, out RaycastHit hitInfo, datos.distanciaAtaque))
+            timer += Time.deltaTime;
+            if (Input.GetMouseButton(0) && timer >= datos.cadenciaAtaque)
             {
-                if (hitInfo.transform.CompareTag("ParteEnemigo"))
+
+                system.Play();
+                audioSource.PlayOneShot(disparoM4);
+                if (Physics.Raycast(cam.transform.position, cam.transform.forward, out RaycastHit hitInfo, datos.distanciaAtaque))
                 {
-                    hitInfo.transform.GetComponent<ParteDeEnemigo>().RecibirDanho(datos.danhoAtaque);
+                    if (hitInfo.transform.CompareTag("ParteEnemigo"))
+                    {
+                        hitInfo.transform.GetComponent<ParteDeEnemigo>().RecibirDanho(datos.danhoAtaque);
+                    }
+
                 }
+                timer = 0;
 
             }
-            timer = 0;
-
+        }
+        {
         }
     }
+         
 }

@@ -11,15 +11,8 @@ using UnityEngine.Rendering.Universal;
 public class MenuPausa : MonoBehaviour
 {
     [SerializeField] private GameObject menuPausa;
-    [SerializeField] private AudioMixer audioMixer;
     bool pausa = false;
-
-    //private UnityEngine.Rendering.Universal.DepthOfField depthOfField;
-
-    //private float normalFocusDistance = 2.06f;
-   // private float pausaFocusDistance = 0f;
-
-    // Start is called before the first frame update
+    
     void Start()
     {
         Cursor.lockState = CursorLockMode.Locked;
@@ -32,31 +25,34 @@ public class MenuPausa : MonoBehaviour
         Pausa();
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            Debug.Log("Esc pulsado");
+            //Debug.Log("Esc pulsado");
         }
 
     }
+    
+    
     public void Pausa()
-    {
-        if (Input.GetKeyDown(KeyCode.Escape) && pausa == false)
-        {
-            // SE MUESTRA CURSOR
-            Cursor.lockState = CursorLockMode.None;
-            Time.timeScale = 0f;
-            menuPausa.SetActive(true);
-            pausa = true;
-            Debug.Log("Juego Pausado");
-        }
-        else if (Input.GetKeyDown(KeyCode.Escape) && pausa == true)
-        {
-            // NO SE MUESTRA CURSOR
-            Cursor.lockState = CursorLockMode.Locked;
-            Time.timeScale = 1f;
-            menuPausa.SetActive(false);
-            pausa = false;
-            Debug.Log("Juego Reanudado");
+    {   
+       
+            if (Input.GetKeyDown(KeyCode.Escape) && pausa == false)
+            {
+                // SE MUESTRA CURSOR
+                Cursor.lockState = CursorLockMode.None;
+                Time.timeScale = 0f;
+                menuPausa.SetActive(true);
+                pausa = true;
+                //Debug.Log("Juego Pausado");
+            }
+            else if (Input.GetKeyDown(KeyCode.Escape) && pausa == true)
+            {
+                // NO SE MUESTRA CURSOR
+                Cursor.lockState = CursorLockMode.Locked;
+                Time.timeScale = 1f;
+                menuPausa.SetActive(false);
+                pausa = false;
+                //Debug.Log("Juego Reanudado");
 
-        }
+            }               
     }
     public void Reanudar()       
     {

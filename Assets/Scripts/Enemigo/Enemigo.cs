@@ -5,23 +5,27 @@ using UnityEngine.AI;
 
 public class Enemigo : MonoBehaviour
 {
+    [Header("Datos del Enemigo")]
     [SerializeField] private int danhoAtaque;
     [SerializeField] private float radioAtaque;
     [SerializeField] private LayerMask queEsPlayer;
     [SerializeField] private Transform attackPoint;
     [SerializeField] public bool danhoRealizado = false;
-    private Rigidbody[] huesos;
     [SerializeField] private float vidas;
 
+    [Header("Componentes")]
+    private Rigidbody[] huesos;
     private NavMeshAgent agent;
     private FirstPerson player;
     private Animator anim;
 
+    [Header("Estados del Enemigo")]
     private bool ventanaAbierta = false;
     private bool atacando = false;
 
     public float Vidas { get => vidas; set => vidas = value; }
 
+    // -------------------- Funciones de Inicialización --------------------
     void Start()
     {
         agent = GetComponent<NavMeshAgent>();
@@ -30,9 +34,9 @@ public class Enemigo : MonoBehaviour
         huesos = GetComponentsInChildren<Rigidbody>();
 
         CambiarEstadoHuesos(true);
-
     }
 
+    // -------------------- Funciones de Actualización --------------------
     void Update()
     {
         if (player == null) return; // Evitar errores si el jugador no existe.
@@ -43,7 +47,7 @@ public class Enemigo : MonoBehaviour
         {
             if (!atacando)
             {
-
+                // Lógica para comenzar el ataque (si la animación y el comportamiento lo requieren)
             }
         }
         else // Si está fuera de rango de ataque
@@ -57,7 +61,7 @@ public class Enemigo : MonoBehaviour
         }
     }
 
-
+    // -------------------- Funciones de Movimiento --------------------
     private void Perseguir()
     {
         agent.SetDestination(player.transform.position);
@@ -69,7 +73,7 @@ public class Enemigo : MonoBehaviour
             anim.SetBool("Attacking", true);
 
             EnfocarPlayer();
-        }       
+        }
     }
 
     private void EnfocarPlayer()
@@ -79,6 +83,7 @@ public class Enemigo : MonoBehaviour
         transform.rotation = Quaternion.LookRotation(direccionAPlayer);
     }
 
+    // -------------------- Funciones de Ataque --------------------
     private void DetectarJugador()
     {
         Collider[] collsDetectados = Physics.OverlapSphere(attackPoint.position, radioAtaque, queEsPlayer);
@@ -111,15 +116,17 @@ public class Enemigo : MonoBehaviour
         danhoRealizado = false;
     }
 
+    // -------------------- Funciones de Muerte --------------------
     public void Morir()
     {
-        agent.enabled = false;
+        //agent.enabled = false;
         anim.enabled = false;
 
         CambiarEstadoHuesos(false);
-        Destroy(gameObject, 5); // Destruir al enemigo tras 10 segundos.
+        Destroy(gameObject, 5); // Destruir al enemigo tras 5 segundos.
     }
 
+    // -------------------- Funciones de Física --------------------
     private void CambiarEstadoHuesos(bool estado)
     {
         for (int i = 0; i < huesos.Length; i++)
@@ -128,6 +135,7 @@ public class Enemigo : MonoBehaviour
         }
     }
 
+    // -------------------- Funciones Auxiliares --------------------
     private void OnDrawGizmosSelected()
     {
         // Visualizar el rango de ataque en la escena.

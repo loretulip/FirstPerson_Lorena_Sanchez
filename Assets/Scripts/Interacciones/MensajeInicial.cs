@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Video;
 
 public class MensajeInicial : MonoBehaviour
 {
@@ -13,6 +14,7 @@ public class MensajeInicial : MonoBehaviour
    
     void Update()
     {
+        
         if (mensajeUI.activeSelf && Input.GetKeyDown(KeyCode.X))
         {
             CerrarMensaje();
