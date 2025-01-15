@@ -1189,7 +1189,7 @@ Transform:
   m_GameObject: {fileID: 330585543}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 310.31674, y: -46.956005, z: 68.27126}
+  m_LocalPosition: {x: 310.31674, y: -46.955994, z: 68.271225}
   m_LocalScale: {x: 1.54691, y: 1.54691, z: 1.54691}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1475,7 +1475,7 @@ Light:
   m_Type: 1
   m_Shape: 0
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Intensity: 0.25
+  m_Intensity: 0.46
   m_Range: 10
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
@@ -4090,7 +4090,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.67295593, g: 0.67295593, b: 0.67295593, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -5544,7 +5544,7 @@ Transform:
   m_GameObject: {fileID: 1282866472}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0.4657684, z: -0, w: 0.8849067}
-  m_LocalPosition: {x: 337.89, y: 137.4, z: -107.36}
+  m_LocalPosition: {x: 10.1, y: 193, z: -81.7}
   m_LocalScale: {x: 0.64645, y: 0.64645, z: 0.64645}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -5836,7 +5836,7 @@ MonoBehaviour:
   vidaActual: 100
   barraVida: {fileID: 1701408944}
   textoVida: {fileID: 1235206298}
-  tieneLlave: 0
+  tieneLlave: 1
 --- !u!136 &1293576276
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -9049,7 +9049,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 0, b: 0.3199501, a: 1}
+  m_Color: {r: 1, g: 0.09517653, b: 0, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -9766,6 +9766,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: AmmoBox (8)
+      objectReference: {fileID: 0}
+    - target: {fileID: 5354684608035851159, guid: bbaad50e1ab6a264ca9ea3404155dde0,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
