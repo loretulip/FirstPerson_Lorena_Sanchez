@@ -6076,6 +6076,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: AmmoBox (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 6475100490139198217, guid: bbaad50e1ab6a264ca9ea3404155dde0,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
